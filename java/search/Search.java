@@ -45,6 +45,7 @@ public class Search{
 			//else add result nodes to frontier if state not in frontier or explored set
 		
 		return null; //solution or failure
+
 	}
 	
 	public static Node uniformCostSearch(Problem problem){
