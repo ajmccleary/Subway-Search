@@ -28,7 +28,23 @@ public class Search{
 	
 	public static Node depthFirstSearch(Problem problem){
 		//YOUR CODE HERE
-		return null;
+		//initial state as queue
+
+		//if initital is goal, return solution
+
+		//else init explored as empty
+
+		//while
+		//if frontier empty, failure
+
+		//pop leaf node from queue
+		//add to explored set
+		//expand node
+		//for node
+			//if node contains goal, return solution
+			//else add result nodes to frontier if state not in frontier or explored set
+		
+		return null; //solution or failure
 	}
 	
 	public static Node uniformCostSearch(Problem problem){
