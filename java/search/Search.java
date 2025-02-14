@@ -1,5 +1,7 @@
 package search;
 
+import subway.SubwayNavigationProblem;
+
 /**
 This code is adapted from search.py in the AIMA Python implementation, which is published with the license below:
 
@@ -65,6 +67,12 @@ public class Search{
 		//Replace this code with code that runs the program specified by
 		//the command arguments
 		
-		System.out.println(args[0]);
+		//testing prob #1 - heres how these work, check .csv's if confused
+		SubwayNavigationProblem snp = new SubwayNavigationProblem(new State("Airport"), new State("Maverick"), "boston");
+		System.out.println(snp.pathCost(0, new State("Airport"), new Action("Blue"), new State("Maverick")));
+		for (Tuple testTuple : snp.successor(new State("Maverick")))
+			System.out.println(testTuple.getAction() + "   " + testTuple.getState());
+
+		//System.out.println(args[0]);
 	}
 }

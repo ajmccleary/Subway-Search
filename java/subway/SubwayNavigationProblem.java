@@ -23,7 +23,7 @@ public class SubwayNavigationProblem extends Problem {
         }
     }
 
-    @Override
+    @Override //do i need full java doc? (RUN THIS BY PROF)
     public ArrayList<Tuple> successor (State state) {
         //create solution array list of tuples
         ArrayList <Tuple> successors = new ArrayList<Tuple>();
