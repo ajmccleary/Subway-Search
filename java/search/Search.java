@@ -1,5 +1,10 @@
 package search;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Queue;
+
 import subway.SubwayNavigationProblem;
 
 /**
@@ -24,29 +29,42 @@ public class Search{
 	// Uninformed Search algorithms
 	
 	public static Node breadthFirstSearch(Problem problem){
-		//YOUR CODE HERE
+		//initialize frontier
+		Node initial = new Node(problem.getInitial()); //initial node
+		Queue<Node> frontier = new LinkedList<Node>();
+		frontier.add(initial);
+
+		//if start(initial) node is goal node
+		if (problem.goalTest(initial.getState())){
+			return initial;
+		}
+
+		//initialize explored set
+		HashSet<Node> explored = new HashSet<Node>();
+		explored.add(initial);
+		
+		while(!frontier.isEmpty()){
+			Node leaf = frontier.remove();
+			explored.add(leaf);
+		
+			for(Node successor : leaf.expand(problem)){
+				if(problem.goalTest(successor.getState())){
+					return successor;
+				} else {
+					if(!frontier.contains(successor) && !explored.contains(successor)){
+						frontier.add(successor);
+					}					
+				}
+			}
+			
+		}
+
 		return null;
 	}
 	
 	public static Node depthFirstSearch(Problem problem){
 		//YOUR CODE HERE
-		//initial state as queue
-
-		//if initital is goal, return solution
-
-		//else init explored as empty
-
-		//while
-		//if frontier empty, failure
-
-		//pop leaf node from queue
-		//add to explored set
-		//expand node
-		//for node
-			//if node contains goal, return solution
-			//else add result nodes to frontier if state not in frontier or explored set
-		
-		return null; //solution or failure
+		return null; 
 
 	}
 	
@@ -74,5 +92,23 @@ public class Search{
 			System.out.println(testTuple.getAction() + "   " + testTuple.getState());
 
 		//System.out.println(args[0]);
+
+		//problem #3: Breadth First Search
+		// if (args[1].equals("bfs")){
+		// 	SubwayNavigationProblem bfs = new SubwayNavigationProblem(new State (args[2]), new State(args[3]), args[0]);
+		// 	Node solution = breadthFirstSearch(bfs);
+		// 	System.out.println("Path:" + solution.path());
+		// 	System.out.println("Path Cost:" + solution.getPathCost());
+		// 	System.out.println("# Visited:" + solution.getDepth());
+		// }
+		//sample
+		SubwayNavigationProblem bfs = new SubwayNavigationProblem(new State("Fenway"), new State("South Station"), "boston");
+		Node solution = breadthFirstSearch(bfs);
+		System.out.println("Path:" + solution.path());
+		System.out.println("Path Cost:" + solution.getPathCost());
+		System.out.println("# Visited:" + solution.getDepth());
+		
+		
+		
 	}
 }
