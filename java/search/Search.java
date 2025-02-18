@@ -1,8 +1,10 @@
 package search;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import subway.SubwayNavigationProblem;
@@ -69,9 +71,30 @@ public class Search{
 	}
 	
 	public static Node uniformCostSearch(Problem problem){
-		//YOUR CODE HERE
-		return null;
-	}
+		//Jessica Theodore Q4
+		 PriorityQueue<Node> frontier = new PriorityQueue<>(Comparator.comparingDouble(Node::getPathCost));
+        HashSet<State> explored = new HashSet<>();
+
+        Node initial = new Node(problem.getInitial(), null, null, 0);
+        frontier.add(initial);
+
+        while (!frontier.isEmpty()) {
+            Node node = frontier.poll();
+
+            if (problem.goalTest(node.getState())) {
+                return node;
+            }
+
+            explored.add(node.getState());
+
+            for (Node successor : node.expand(problem)) {
+                if (!explored.contains(successor.getState()) && !frontier.contains(successor)) {
+                    frontier.add(successor);
+                }
+            }
+        }
+        return null;
+    }
 
 	// Informed (Heuristic) Search
 	
