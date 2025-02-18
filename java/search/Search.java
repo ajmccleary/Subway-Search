@@ -73,21 +73,26 @@ public class Search{
 	public static Node uniformCostSearch(Problem problem){
 		//Jessica Theodore Q4
 		 PriorityQueue<Node> frontier = new PriorityQueue<>(Comparator.comparingDouble(Node::getPathCost));
-        HashSet<State> explored = new HashSet<>();
+       
+		 // HashSet to keep track of explored states to avoid revisiting them.
+		 HashSet<State> explored = new HashSet<>();
 
+	     // Create the initial node with the start state, no parent, no action, and zero cost.
         Node initial = new Node(problem.getInitial(), null, null, 0);
         frontier.add(initial);
 
-        while (!frontier.isEmpty()) {
-            Node node = frontier.poll();
+        while (!frontier.isEmpty()) { // Loop until there are no more nodes to explore
+            Node node = frontier.poll(); // Retrieve and remove the node with the lowest path cost.
 
-            if (problem.goalTest(node.getState())) {
-                return node;
+            if (problem.goalTest(node.getState())) {// Check if the goal state is reached.
+                return node;// Return the goal node to reconstruct the solution path.
             }
 
-            explored.add(node.getState());
+            explored.add(node.getState());// Mark this state as explored.
 
+			// Expand the current node to generate its successors.
             for (Node successor : node.expand(problem)) {
+				 // Add successor to frontier only if it's not in explored set or frontier
                 if (!explored.contains(successor.getState()) && !frontier.contains(successor)) {
                     frontier.add(successor);
                 }
