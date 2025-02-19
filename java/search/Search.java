@@ -82,7 +82,6 @@ public class Search {
 	}
 
 	public static Node depthFirstSearch(Problem problem) {
-		// YOUR CODE HERE
 		// intialize the stack and empty set for visited vertices
 		Node initial = new Node(problem.getInitial());
 		Stack<Node> stack = new Stack<>();
@@ -217,9 +216,14 @@ public class Search {
 		// Replace this code with code that runs the program specified by
 		// the command arguments
 
-		// testing prob #1 - heres how these work, check .csv's if confused
-		SubwayNavigationProblem snp = new SubwayNavigationProblem(new State("Airport"), new State("Maverick"),
-				"boston");
+		//if distance inputted
+		if (args.length == 5) {
+			double distance = Integer.parseInt(args[4]);
+		}
+			
+
+		// testing prob #1 - heres how these work, check .csv's if confused - REMOVE BEFORE SUBMISSION
+		SubwayNavigationProblem snp = new SubwayNavigationProblem(new State("Airport"), new State("Maverick"),"boston");
 		System.out.println(snp.pathCost(0, new State("Airport"), new Action("Blue"), new State("Maverick")));
 		for (Tuple testTuple : snp.successor(new State("Maverick")))
 			System.out.println(testTuple.getAction() + "   " + testTuple.getState());
