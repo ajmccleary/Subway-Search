@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import search.*;
 
-public class SubwayNavigationProblem extends Problem { //should i do javadoc? should i put my name commented by what parts i did?
+public class SubwayNavigationProblem extends Problem {
     public SubwayMap subwayMap;
     public double distance;
 
@@ -13,7 +13,7 @@ public class SubwayNavigationProblem extends Problem { //should i do javadoc? sh
         //call super constructor
         super(initial, goal);
 
-        //RUN THIS BY PROF TO SEE SPECIFICS OF IF THIS IS FINE
+        //create london map if specified, otherwise create boston map
         try {
         if (city.toLowerCase().equals("london"))
             this.subwayMap = SubwayMap.buildLondonMap();
@@ -36,7 +36,7 @@ public class SubwayNavigationProblem extends Problem { //should i do javadoc? sh
         this.distance = d;
     }
 
-    @Override //do i need full java doc? (RUN THIS BY PROF)
+    @Override
     public ArrayList<Tuple> successor (State state) {
         //create solution array list of tuples
         ArrayList <Tuple> successors = new ArrayList<Tuple>();
@@ -59,7 +59,7 @@ public class SubwayNavigationProblem extends Problem { //should i do javadoc? sh
 
     @Override
     public boolean goalTest (State state) {
-        //if straight line distance (CHECK WITH PROF) is less than distance specified by input, return true that state is a goal
+        //if straight line distance is less than distance specified by input, return true that state is a goal
         if (SubwayMap.straightLineDistance(subwayMap.getStationByName(state.getName()), subwayMap.getStationByName(this.goal.getName())) < this.distance)
             return true;
 
@@ -81,7 +81,7 @@ public class SubwayNavigationProblem extends Problem { //should i do javadoc? sh
             }
         }
 
-        //if no links between stations or if no link equal to action, return unmodified cost (ALSO RUN THIS BY PROF)
+        //default case, this should never be reached if method utilized correctly
         return cost;
     }
 

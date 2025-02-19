@@ -213,14 +213,19 @@ public class Search {
 
 	// Main
 	public static void main(String[] args) {
-		// Replace this code with code that runs the program specified by
-		// the command arguments
+		//store command line args
+		String city = args[0];
+		String searchMethod = args[1];
+		String startState = args[2];
+		String goalState = args[3];
 
 		//if distance inputted
 		if (args.length == 5) {
+			//store distance
 			double distance = Integer.parseInt(args[4]);
-		}
-			
+		} else {
+			double distance = 0;
+		}			
 
 		// testing prob #1 - heres how these work, check .csv's if confused - REMOVE BEFORE SUBMISSION
 		SubwayNavigationProblem snp = new SubwayNavigationProblem(new State("Airport"), new State("Maverick"),"boston");
