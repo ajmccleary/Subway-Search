@@ -1,8 +1,10 @@
 package search;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 import java.util.Queue;
 
 import subway.SubwayNavigationProblem;
@@ -32,7 +34,9 @@ public class Search{
 		//initialize frontier
 		Node initial = new Node(problem.getInitial()); //initial node
 		Queue<Node> frontier = new LinkedList<Node>();
+		HashSet<State> frontierStates = new HashSet<State>();
 		frontier.add(initial);
+		frontierStates.add(initial.getState());
 
 		//if start(initial) node is goal node
 		if (problem.goalTest(initial.getState())){
@@ -40,19 +44,21 @@ public class Search{
 		}
 
 		//initialize explored set
-		HashSet<Node> explored = new HashSet<Node>();
-		explored.add(initial);
+		HashSet<State> explored = new HashSet<State>();
+		explored.add(initial.getState());
 		
 		while(!frontier.isEmpty()){
 			Node leaf = frontier.remove();
-			explored.add(leaf);
+			frontierStates.remove(leaf.getState());
+			explored.add(leaf.getState());
 		
 			for(Node successor : leaf.expand(problem)){
 				if(problem.goalTest(successor.getState())){
 					return successor;
 				} else {
-					if(!frontier.contains(successor) && !explored.contains(successor)){
+					if(!frontierStates.contains(successor.getState()) && !explored.contains(successor.getState())){
 						frontier.add(successor);
+						frontierStates.add(successor.getState());
 					}					
 				}
 			}
@@ -76,7 +82,52 @@ public class Search{
 	// Informed (Heuristic) Search
 	
 	public static Node aStarSearch(Problem problem){
-		//YOUR CODE HERE
+		//initial
+		Node initial = new Node(problem.getInitial()); //initial node
+		initial = new Node(problem.getInitial(), null, null, (0 + problem.h(initial))); //initial node
+		
+		//initialize frontier
+		PriorityQueue<Node> frontier = new PriorityQueue<>(new Comparator<Node>() {
+            @Override
+            public int compare(Node n1, Node n2) {
+                return Double.compare(n1.getPathCost(), n2.getPathCost());
+            }
+        });
+		HashSet<State> frontierStates = new HashSet<State>(); //keeps track of states
+		frontier.add(initial);
+		frontierStates.add(initial.getState());
+		
+
+		//initialize explored set
+		HashSet<State> explored = new HashSet<State>();
+
+		//search frontier
+		while(!frontier.isEmpty()){
+			Node leaf = frontier.remove();
+			if(problem.goalTest(leaf.getState())){
+				return leaf;
+			}
+			explored.add(leaf.getState());
+
+			for(Node successor : leaf.expand(problem)){
+				//checks if successor is new
+			
+
+				if(!frontierStates.contains(successor.getState()) && !explored.contains(successor.getState())){ //if successor already in frontier/explored
+					frontier.add(new Node(successor.getState(), successor.get));
+					frontierStates.add(successor.getState());
+					
+				} else if (frontierStates.contains(successor.getState()) && ){  //if successor is better than current node with same state in frontier/explored
+
+				}
+
+				//alt implement: search through all
+					
+				
+			}
+
+		}
+
 		return null;
 	}
 	
@@ -108,7 +159,13 @@ public class Search{
 		System.out.println("Path Cost:" + solution.getPathCost());
 		System.out.println("# Visited:" + solution.getDepth());
 		
-		
+		//problem #5 A* Search
+		SubwayNavigationProblem astar = new SubwayNavigationProblem(new State("Fenway"), new State("South Station"), "boston");
+		Node answer = aStarSearch(astar);
+		System.out.println("Path:" + answer.path());
+		System.out.println("Path Cost:" + answer.getPathCost());
+		System.out.println("# Visited:" + answer.getDepth());
+
 		
 	}
 }

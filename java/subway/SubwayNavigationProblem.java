@@ -62,4 +62,25 @@ public class SubwayNavigationProblem extends Problem {
         //if no links between stations or if no link equal to action, return unmodified cost (ALSO RUN THIS BY PROF)
         return cost;
     }
+
+    @Override
+    /**
+	Return the heuristic function value for a particular node. Returns informed heuristic value.
+	@param node A search node
+	@return The heuristic value for the state in that search node.
+	*/
+	public double h(Node node){
+        //lat^2 + long^2 = sld heuristic
+        Station goalStation = subwayMap.getStationByName(goal.getName());
+        Station currentStation = subwayMap.getStationByName(node.getState().getName());
+        
+        //System.out.println(goal.toString() + " " + node.toString());
+        double latitudeDistance = Math.abs(goalStation.latitude - currentStation.latitude);
+        double longitudeDistance = Math.abs(goalStation.longitude - currentStation.longitude);
+    
+        double distance = Math.sqrt(Math.pow(latitudeDistance,2) + Math.pow(longitudeDistance,2));
+        //System.out.println(latitudeDistance + " " + longitudeDistance);
+
+		return distance;
+	}
 }
