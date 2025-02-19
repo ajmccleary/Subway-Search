@@ -5,13 +5,15 @@ import java.util.ArrayList;
 
 import search.*;
 
-public class SubwayNavigationProblem extends Problem {
+public class SubwayNavigationProblem extends Problem { //should i do javadoc? should i put my name commented by what parts i did?
     public SubwayMap subwayMap;
+    public double distance;
 
-    public SubwayNavigationProblem (State initial, State goal, String city) { //city potentially not needed? don't know how else we'd do this tho
+    public SubwayNavigationProblem (State initial, State goal, String city) {
+        //call super constructor
         super(initial, goal);
 
-        //create map based on input (RUN THIS BY PROF)
+        //RUN THIS BY PROF TO SEE SPECIFICS OF IF THIS IS FINE
         try {
         if (city.toLowerCase().equals("london"))
             this.subwayMap = SubwayMap.buildLondonMap();
@@ -21,6 +23,17 @@ public class SubwayNavigationProblem extends Problem {
         } catch (FileNotFoundException fnfe) {
             System.out.println(fnfe.toString());
         }
+
+        //set distance to default (0) since unprovided
+        this.distance = 0;
+    }
+
+    public SubwayNavigationProblem (State initial, State goal, String city, double d) {
+        //call three argument constructor
+        this(initial, goal, city);
+
+        //set distance to inputted distance
+        this.distance = d;
     }
 
     @Override //do i need full java doc? (RUN THIS BY PROF)
@@ -42,6 +55,15 @@ public class SubwayNavigationProblem extends Problem {
         
         //return arraylist of all successor states + actions
         return successors;
+    }
+
+    @Override
+    public boolean goalTest (State state) {
+        //if straight line distance (CHECK WITH PROF) is less than distance specified by input, return true that state is a goal
+        if (SubwayMap.straightLineDistance(subwayMap.getStationByName(state.getName()), subwayMap.getStationByName(this.goal.getName())) < this.distance)
+            return true;
+
+        return state.equals(this.goal);
     }
 
     @Override
