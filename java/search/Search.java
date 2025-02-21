@@ -214,79 +214,59 @@ public class Search {
 	// Main
 	public static void main(String[] args) {
 		//store command line args
-		String city = args[0];
+		String problemType = args[0];
 		String searchMethod = args[1];
 		String startState = args[2];
 		String goalState = args[3];
 
-		//if distance inputted
-		if (args.length == 5) {
-			//store distance
-			double distance = Integer.parseInt(args[4]);
-		} else {
-			double distance = 0;
-		}			
+		Problem problem = null;
+		Node solution = null;
 
-		// testing prob #1 - heres how these work, check .csv's if confused - REMOVE BEFORE SUBMISSION
-		SubwayNavigationProblem snp = new SubwayNavigationProblem(new State("Airport"), new State("Maverick"),"boston");
-		System.out.println(snp.pathCost(0, new State("Airport"), new Action("Blue"), new State("Maverick")));
-		for (Tuple testTuple : snp.successor(new State("Maverick")))
-			System.out.println(testTuple.getAction() + "   " + testTuple.getState());
+		switch (problemType) {
+			case "eight":
+				problem = new EightpuzzleProblem(new State(startState), new State(goalState));
+				break;
+		
+			default:
+				double distance = 0.0;
+				if (args.length >= 5) {
+					distance = Double.parseDouble(args[4]);
+				}
 
-		// System.out.println(args[0]);
-
-		// problem #3: Breadth First Search
-		// if (args[1].equals("bfs")){
-		// SubwayNavigationProblem bfs = new SubwayNavigationProblem(new State
-		// (args[2]), new State(args[3]), args[0]);
-		// Node solution = breadthFirstSearch(bfs);
-		// System.out.println("Path:" + solution.path());
-		// System.out.println("Path Cost:" + solution.getPathCost());
-		// System.out.println("# Visited:" + solution.getDepth());
-		// }
-		// sample
+				problem = new SubwayNavigationProblem(new State(startState), new State(goalState), problemType, distance);
+				break;
+		}
 
 		long currentTime = System.currentTimeMillis();
 
-		SubwayNavigationProblem bfs = new SubwayNavigationProblem(new State("Fenway"), new State("South Station"),
-				"boston");
-		Node solution = breadthFirstSearch(bfs);
-		System.out.println("Path:" + solution.path());
-		System.out.println("Path Cost:" + solution.getPathCost());
-		System.out.println("# Visited:" + solution.getDepth());
-		
-		//problem #5 A* Search
-		SubwayNavigationProblem astar = new SubwayNavigationProblem(new State("Fenway"), new State("South Station"), "boston");
-		Node answer = aStarSearch(astar);
+		switch (searchMethod) {
+			case "bfs":
+				solution = breadthFirstSearch(problem);
+				break;
+			case "dfs":
+				solution = depthFirstSearch(problem);
+				break;
+			case "ucs":
+				solution = uniformCostSearch(problem);
+				break;
+			case "astar":
+				solution = aStarSearch(problem);
+				break;
+			default:
+				System.out.println("Invalid Algorithm!");
+				return;
+		}
 
-		double heuristicPathCost = answer.getPathCost();
-		for(Node successor : answer.path()){
+		double heuristicPathCost = solution.getPathCost();
+		for(Node successor : solution.path()){
 			heuristicPathCost += successor.getPathCost();
 		}
 		
-		System.out.println("Path:" + answer.path());
-		System.out.println("Path Cost:" + answer.getPathCost());
+		System.out.println("Path:" + solution.path());
+		System.out.println("Path Cost:" + solution.getPathCost());
 		System.out.println("Heuristic Path Cost:" + heuristicPathCost);
-		System.out.println("# Visited:" + answer.getDepth());
-
-		
-
-		
+		System.out.println("# Visited:" + solution.getDepth());
 
 		System.out.println("Time taken: " + (System.currentTimeMillis() - currentTime) + "ms");
-		System.out.println();
-
-		currentTime = System.currentTimeMillis();
-
-		// Depth first search
-		SubwayNavigationProblem dfs = new SubwayNavigationProblem(new State("Fenway"), new State("South Station"),
-				"boston");
-		Node solution2 = depthFirstSearch(dfs);
-		System.out.println("Path:" + solution2.path());
-		System.out.println("Path Cost:" + solution2.getPathCost());
-		System.out.println("# Visited:" + solution2.getDepth());
-
-		System.out.println("Time taken: " + (System.currentTimeMillis() - currentTime) + "ms");
-
 	}
 }
